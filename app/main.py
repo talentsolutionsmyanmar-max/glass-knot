@@ -35,6 +35,7 @@ async def _background_poll() -> None:
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
     global _poll_task
+    import os
     config.DATA_DIR.mkdir(parents=True, exist_ok=True)
     if not config.API_CALLS_PATH.exists():
         config.API_CALLS_PATH.write_text(
@@ -51,6 +52,11 @@ async def lifespan(_app: FastAPI):
             )
             + "\n"
         )
+    freeze = os.environ.get("FREEZE_DASHBOARD", "").strip() in ("1", "true", "TRUE", "yes")
+    if freeze:
+        log.info("FREEZE_DASHBOARD=1 — serving latest.json only, no Nansen poll")
+        yield
+        return
     try:
         await asyncio.to_thread(run_pipeline)
     except Exception:  # noqa: BLE001
