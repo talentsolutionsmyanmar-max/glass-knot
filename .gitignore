@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 .env
 data/latest.json
+data/history.jsonl
 .DS_Store
 *.egg-info/
 dist/

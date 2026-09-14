@@ -79,7 +79,7 @@ app = FastAPI(
         "FARM_CLUSTER | SOLO_SM | RESEARCH | FAIL. "
         "PAPER · INSPECT ONLY · NO COPY-TRADE."
     ),
-    version="0.2.0",
+    version="0.3.0",
     lifespan=lifespan,
 )
 
@@ -93,10 +93,15 @@ def index() -> FileResponse:
 
 @app.get("/api/health")
 def health() -> dict[str, Any]:
+    import os
+
+    freeze = os.environ.get("FREEZE_DASHBOARD", "").strip() in ("1", "true", "TRUE", "yes")
     return {
         "ok": True,
         "product": "Glass Knot",
+        "question": "Is this Smart Money touch a farm or solo?",
         "demo_mode": config.DEMO_MODE,
+        "freeze_dashboard": freeze,
         "policy": "PAPER_INSPECT_ONLY",
         "grades": list(config.GRADES),
         "has_latest": config.LATEST_PATH.exists(),
@@ -117,6 +122,13 @@ def latest() -> JSONResponse:
 @app.get("/api/calls")
 def api_calls() -> dict[str, Any]:
     return read_counter()
+
+
+@app.get("/api/history")
+def history() -> dict[str, Any]:
+    from app.pipeline import read_history
+
+    return {"items": read_history(limit=50)}
 
 
 @app.post("/api/poll")

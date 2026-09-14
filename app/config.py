@@ -46,6 +46,7 @@ DATA_DIR = ROOT / "data"
 FIXTURES_DIR = ROOT / "fixtures"
 LATEST_PATH = DATA_DIR / "latest.json"
 API_CALLS_PATH = DATA_DIR / "api_calls.json"
+HISTORY_PATH = DATA_DIR / "history.jsonl"
 STATIC_DIR = ROOT / "static"
 
 NANSEN_BASE = "https://api.nansen.ai"

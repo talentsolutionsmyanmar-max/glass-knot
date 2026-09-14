@@ -10,10 +10,13 @@ from typing import Any
 
 from app import config
 from app.api_counter import read_counter
-from app.grader import grade_knot
+from app.grader import grade_knot, mint_stats_from_tape
 from app.nansen import NansenClient
 
 log = logging.getLogger("glass_knot.pipeline")
+
+HISTORY_KEEP = 200
+HISTORY_UI = 16
 
 
 def _short(addr: str | None, n: int = 4) -> str:
@@ -203,6 +206,7 @@ def select_seeds(trades: list[dict[str, Any]], *, limit: int = 6) -> list[dict[s
                     "value_usd": t.get("trade_value_usd"),
                     "ts": t.get("block_timestamp"),
                     "tx": t.get("transaction_hash"),
+                    "age_days": t.get("token_bought_age_days"),
                 },
             }
         )
@@ -211,22 +215,102 @@ def select_seeds(trades: list[dict[str, Any]], *, limit: int = 6) -> list[dict[s
     return seeds
 
 
+def read_history(*, limit: int = HISTORY_UI) -> list[dict[str, Any]]:
+    path = config.HISTORY_PATH
+    if not path.exists():
+        return []
+    items: list[dict[str, Any]] = []
+    try:
+        lines = path.read_text().splitlines()
+    except OSError:
+        return []
+    for line in lines:
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            rec = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(rec, dict):
+            items.append(rec)
+    return items[-limit:]
+
+
+def append_history(knots: list[dict[str, Any]], generated_at: str) -> list[dict[str, Any]]:
+    """Append one inspect-only grade row per knot. No PnL, no size."""
+    path = config.HISTORY_PATH
+    config.DATA_DIR.mkdir(parents=True, exist_ok=True)
+    existing: list[str] = []
+    if path.exists():
+        try:
+            existing = [ln for ln in path.read_text().splitlines() if ln.strip()]
+        except OSError:
+            existing = []
+    new_lines: list[str] = []
+    for k in knots:
+        rec = {
+            "ts": generated_at,
+            "grade": k.get("grade"),
+            "confidence": k.get("confidence"),
+            "seed_short": k.get("seed_short"),
+            "seed_address": k.get("seed_address"),
+            "token": k.get("token_symbol"),
+            "mint": k.get("token_mint"),
+            "mint_short": k.get("token_mint_short"),
+            "related_count": k.get("related_count"),
+            "node_count": k.get("node_count"),
+            "edge_count": k.get("edge_count"),
+            "reason": (k.get("reason_plain") or "")[:240],
+        }
+        new_lines.append(json.dumps(rec, separators=(",", ":")))
+    kept = (existing + new_lines)[-HISTORY_KEEP:]
+    path.write_text("\n".join(kept) + "\n")
+    parsed: list[dict[str, Any]] = []
+    for ln in kept[-HISTORY_UI:]:
+        try:
+            parsed.append(json.loads(ln))
+        except json.JSONDecodeError:
+            continue
+    return parsed
+
+
+def _featured_knot(knots: list[dict[str, Any]]) -> dict[str, Any] | None:
+    if not knots:
+        return None
+    for g in ("FARM_CLUSTER", "SOLO_SM", "RESEARCH", "FAIL"):
+        for k in knots:
+            if k.get("grade") == g:
+                return k
+    return knots[0]
+
+
 def run_pipeline(client: NansenClient | None = None) -> dict[str, Any]:
     client = client or NansenClient()
     raw = client.fetch_dex_trades()
     trades = list(raw.get("data") or [])
     seeds = select_seeds(trades)
+    tape = build_tape(trades)
 
     knots: list[dict[str, Any]] = []
     for seed in seeds:
         knot = bfs_related(client, seed["address"])
         knot["seed_trade_label"] = seed.get("label_from_trade")
         knot["sample_trade"] = seed.get("sample_trade")
+        sample = knot.get("sample_trade") or {}
+        knot["token_symbol"] = sample.get("bought")
+        knot["token_mint"] = sample.get("bought_address")
+        knot["token_mint_short"] = _short(sample.get("bought_address"))
         enrich_labels(client, knot)
         maybe_counterparties(client, knot)
-        graded = grade_knot(knot)
+        mint = mint_stats_from_tape(knot, tape)
+        graded = grade_knot(knot, mint_stats=mint, tape=tape)
         knot["grade"] = graded["grade"]
         knot["grade_notes"] = graded["notes"]
+        knot["reasons"] = graded["reasons"]
+        knot["reason_plain"] = graded["reason_plain"]
+        knot["confidence"] = graded["confidence"]
+        knot["signals"] = graded["signals"]
         knot["grade_detail"] = graded
         knots.append(knot)
 
@@ -237,11 +321,35 @@ def run_pipeline(client: NansenClient | None = None) -> dict[str, Any]:
     # Stable demo order: farms first, then solo, research, fail
     order = {g: i for i, g in enumerate(("FARM_CLUSTER", "SOLO_SM", "RESEARCH", "FAIL"))}
     knots.sort(key=lambda k: (order.get(k["grade"], 99), -int(k.get("related_count") or 0)))
+    for i, k in enumerate(knots):
+        k["featured"] = i == 0
+
+    generated_at = datetime.now(timezone.utc).isoformat()
+    history = append_history(knots, generated_at)
+    featured = _featured_knot(knots)
+    featured_card = None
+    if featured:
+        featured_card = {
+            "seed_address": featured.get("seed_address"),
+            "seed_short": featured.get("seed_short"),
+            "grade": featured.get("grade"),
+            "confidence": featured.get("confidence"),
+            "reason_plain": featured.get("reason_plain"),
+            "reasons": featured.get("reasons"),
+            "token_symbol": featured.get("token_symbol"),
+            "token_mint": featured.get("token_mint"),
+            "token_mint_short": featured.get("token_mint_short"),
+            "related_count": featured.get("related_count"),
+            "node_count": featured.get("node_count"),
+            "edge_count": featured.get("edge_count"),
+            "signals": featured.get("signals"),
+        }
 
     api_calls = read_counter()
     payload = {
         "product": "Glass Knot",
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "question": "Is this Smart Money touch a farm or solo?",
+        "generated_at": generated_at,
         "demo_mode": client.demo,
         "policy": {
             "mode": "PAPER_INSPECT_ONLY",
@@ -263,8 +371,10 @@ def run_pipeline(client: NansenClient | None = None) -> dict[str, Any]:
             "grades": grade_counts,
         },
         "api_calls": api_calls,
-        "tape": build_tape(trades),
+        "tape": tape,
         "knots": knots,
+        "featured": featured_card,
+        "history": history,
         "pagination": raw.get("pagination"),
     }
 

@@ -3,19 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Glass Knot — PAPER · INSPECT ONLY</title>
+  <title>Glass Knot — Is this Smart Money touch a farm or solo?</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/static/styles.css" />
 </head>
 <body>
   <div class="banner" id="policy-banner">PAPER · INSPECT ONLY · NO COPY-TRADE · NO ORDERS · NO SIZE</div>
 
+  <section class="mother" id="mother">
+    <p class="eyebrow">Mother test · Solana Smart Money · inspect only</p>
+    <h1>Is this Smart Money touch a farm or solo?</h1>
+    <p class="lede">When a Smart Money wallet buys a Solana token, Glass Knot expands the related-wallet knot and grades <em>structure</em> — farm cluster or lone buyer. No copy-trade. No orders. No size.</p>
+  </section>
+
   <header class="topbar">
     <div class="brand">
-      <h1>Glass Knot</h1>
-      <div class="sub">SM dex-trades → BFS related-wallets → grade · Solana · inspect only</div>
+      <h2>Glass Knot</h2>
+      <div class="sub">SM dex-trades → BFS related-wallets → grade</div>
     </div>
     <div class="chips" id="chips"></div>
     <div class="actions">
@@ -24,22 +30,40 @@
     </div>
   </header>
 
+  <section class="hero" id="hero"></section>
+
+  <section class="stage">
+    <section class="panel graph-panel">
+      <h2>
+        <span>BFS knot graph</span>
+        <span id="graph-caption">select a knot — farm clusters, solo stays sparse</span>
+      </h2>
+      <div class="graph-wrap">
+        <svg id="knot-graph" viewBox="0 0 640 360" role="img" aria-label="Related-wallet knot graph"></svg>
+        <div class="graph-legend" id="graph-legend"></div>
+      </div>
+    </section>
+    <section class="panel proof-panel">
+      <h2><span>Why this grade</span><span id="proof-grade"></span></h2>
+      <div class="body" id="proof"></div>
+    </section>
+  </section>
+
+  <section class="history-strip">
+    <h2>Recent grades <span>inspect history · no PnL</span></h2>
+    <div class="history-row" id="history"></div>
+  </section>
+
   <section class="stats" id="stats"></section>
 
   <main class="grid">
-    <section class="panel">
-      <h2><span>Live SM tape</span><span id="tape-count"></span></h2>
-      <div class="body" id="tape"></div>
-    </section>
-
-    <section class="panel">
-      <h2><span>Knot grades</span><span id="grade-legend">FARM · SOLO · RESEARCH · FAIL</span></h2>
-      <div class="body" id="grade-summary"></div>
-    </section>
-
-    <section class="panel" style="grid-column: 1 / -1;">
-      <h2><span>Knot expansion</span><span>click a knot to expand BFS graph</span></h2>
+    <section class="panel knots-panel">
+      <h2><span>Knots</span><span id="grade-legend">click to inspect graph</span></h2>
       <div class="body" id="knots"></div>
+    </section>
+    <section class="panel tape-panel">
+      <h2><span>SM tape</span><span id="tape-count">secondary</span></h2>
+      <div class="body" id="tape"></div>
     </section>
   </main>
 
