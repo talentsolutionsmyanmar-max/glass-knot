@@ -1,0 +1,8 @@
+{
+  "total": 0,
+  "by_endpoint": {},
+  "last_call_at": null,
+  "updated_at": null,
+  "target": 1000,
+  "note": "Counts every live Nansen request (demo/fixture loads do not increment)."
+}

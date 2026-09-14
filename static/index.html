@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Glass Knot — PAPER · INSPECT ONLY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="banner" id="policy-banner">PAPER · INSPECT ONLY · NO COPY-TRADE · NO ORDERS · NO SIZE</div>
+
+  <header class="topbar">
+    <div class="brand">
+      <h1>Glass Knot</h1>
+      <div class="sub">SM dex-trades → BFS related-wallets → grade · Solana · inspect only</div>
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="actions">
+      <button id="btn-poll" type="button">Poll now</button>
+      <button id="btn-refresh" type="button">Refresh</button>
+    </div>
+  </header>
+
+  <section class="stats" id="stats"></section>
+
+  <main class="grid">
+    <section class="panel">
+      <h2><span>Live SM tape</span><span id="tape-count"></span></h2>
+      <div class="body" id="tape"></div>
+    </section>
+
+    <section class="panel">
+      <h2><span>Knot grades</span><span id="grade-legend">FARM · SOLO · RESEARCH · FAIL</span></h2>
+      <div class="body" id="grade-summary"></div>
+    </section>
+
+    <section class="panel" style="grid-column: 1 / -1;">
+      <h2><span>Knot expansion</span><span>click a knot to expand BFS graph</span></h2>
+      <div class="body" id="knots"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Glass Knot never copy-trades, never places orders, never recommends size.
+    Grades: <code>FARM_CLUSTER</code> | <code>SOLO_SM</code> | <code>RESEARCH</code> | <code>FAIL</code>.
+    Data: Nansen <code>smart-money/dex-trades</code> + <code>related-wallets</code> (+ optional counterparties) + free labels.
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

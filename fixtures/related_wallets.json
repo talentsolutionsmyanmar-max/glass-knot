@@ -1,0 +1,196 @@
+{
+  "FarmSeedWalletAAAAAAAAAAAAGlassKnot1111111": {
+    "data": [
+      {
+        "address": "FarmChild01WalletGlassKnotAAAA01111111",
+        "relation": "funded_by",
+        "strength": 0.9
+      },
+      {
+        "address": "FarmChild02WalletGlassKnotAAAA02111111",
+        "relation": "funded_by",
+        "strength": 0.9
+      },
+      {
+        "address": "FarmChild03WalletGlassKnotAAAA03111111",
+        "relation": "funded_by",
+        "strength": 0.9
+      },
+      {
+        "address": "FarmChild04WalletGlassKnotAAAA04111111",
+        "relation": "funded_by",
+        "strength": 0.9
+      },
+      {
+        "address": "FarmChild05WalletGlassKnotAAAA05111111",
+        "relation": "funded_by",
+        "strength": 0.9
+      },
+      {
+        "address": "FarmChild06WalletGlassKnotAAAA06111111",
+        "relation": "funded_by",
+        "strength": 0.9
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "per_page": 50,
+      "is_last_page": true
+    },
+    "source": "fixture"
+  },
+  "FarmChild01WalletGlassKnotAAAA01111111": {
+    "data": [
+      {
+        "address": "FarmGrand01WalletGlassKnotAAAA012222",
+        "relation": "shared_funding",
+        "strength": 0.7
+      },
+      {
+        "address": "FarmGrand02WalletGlassKnotAAAA022222",
+        "relation": "shared_funding",
+        "strength": 0.7
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "per_page": 50,
+      "is_last_page": true
+    },
+    "source": "fixture"
+  },
+  "SoloSmartMoneyWalletBBBBGlassKnot222222222": {
+    "data": [],
+    "pagination": {
+      "page": 1,
+      "per_page": 50,
+      "is_last_page": true
+    },
+    "source": "fixture"
+  },
+  "ResearchWalletCCCCGlassKnot333333333333333": {
+    "data": [
+      {
+        "address": "ResearchRel01WalletGlassKnotCCCC111111111",
+        "relation": "counterparty",
+        "strength": 0.4
+      },
+      {
+        "address": "ResearchRel02WalletGlassKnotCCCC222222222",
+        "relation": "counterparty",
+        "strength": 0.4
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "per_page": 50,
+      "is_last_page": true
+    },
+    "source": "fixture"
+  },
+  "ScamLinkedWalletDDDDGlassKnot4444444444444": {
+    "data": [
+      {
+        "address": "ScamBuddy01WalletGlassKnotDDDD11111111111",
+        "relation": "funded_by",
+        "strength": 0.5
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "per_page": 50,
+      "is_last_page": true
+    },
+    "source": "fixture"
+  },
+  "FarmChild02WalletGlassKnotAAAA02111111": {
+    "data": [],
+    "pagination": {
+      "page": 1,
+      "per_page": 50,
+      "is_last_page": true
+    },
+    "source": "fixture"
+  },
+  "FarmChild03WalletGlassKnotAAAA03111111": {
+    "data": [],
+    "pagination": {
+      "page": 1,
+      "per_page": 50,
+      "is_last_page": true
+    },
+    "source": "fixture"
+  },
+  "FarmChild04WalletGlassKnotAAAA04111111": {
+    "data": [],
+    "pagination": {
+      "page": 1,
+      "per_page": 50,
+      "is_last_page": true
+    },
+    "source": "fixture"
+  },
+  "FarmChild05WalletGlassKnotAAAA05111111": {
+    "data": [],
+    "pagination": {
+      "page": 1,
+      "per_page": 50,
+      "is_last_page": true
+    },
+    "source": "fixture"
+  },
+  "FarmChild06WalletGlassKnotAAAA06111111": {
+    "data": [],
+    "pagination": {
+      "page": 1,
+      "per_page": 50,
+      "is_last_page": true
+    },
+    "source": "fixture"
+  },
+  "FarmGrand01WalletGlassKnotAAAA012222": {
+    "data": [],
+    "pagination": {
+      "page": 1,
+      "per_page": 50,
+      "is_last_page": true
+    },
+    "source": "fixture"
+  },
+  "FarmGrand02WalletGlassKnotAAAA022222": {
+    "data": [],
+    "pagination": {
+      "page": 1,
+      "per_page": 50,
+      "is_last_page": true
+    },
+    "source": "fixture"
+  },
+  "ResearchRel01WalletGlassKnotCCCC111111111": {
+    "data": [],
+    "pagination": {
+      "page": 1,
+      "per_page": 50,
+      "is_last_page": true
+    },
+    "source": "fixture"
+  },
+  "ResearchRel02WalletGlassKnotCCCC222222222": {
+    "data": [],
+    "pagination": {
+      "page": 1,
+      "per_page": 50,
+      "is_last_page": true
+    },
+    "source": "fixture"
+  },
+  "ScamBuddy01WalletGlassKnotDDDD11111111111": {
+    "data": [],
+    "pagination": {
+      "page": 1,
+      "per_page": 50,
+      "is_last_page": true
+    },
+    "source": "fixture"
+  }
+}
