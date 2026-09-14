@@ -34,6 +34,13 @@ USE_PREMIUM_LABELS = (os.getenv("USE_PREMIUM_LABELS") or "0").strip() in (
     "True",
     "yes",
 )
+# Free plan returns 403 on /labels — skip unless SKIP_LABELS=0
+SKIP_LABELS = (os.getenv("SKIP_LABELS") or "1").strip() not in (
+    "0",
+    "false",
+    "False",
+    "no",
+)
 
 DATA_DIR = ROOT / "data"
 FIXTURES_DIR = ROOT / "fixtures"

@@ -114,6 +114,12 @@ class NansenClient:
 
     def fetch_labels(self, address: str) -> dict[str, Any]:
         """Free labels by default; premium only if USE_PREMIUM_LABELS=1."""
+        if config.SKIP_LABELS and not self.demo:
+            return {
+                "data": [],
+                "pagination": {"page": 1, "per_page": 100, "is_last_page": True},
+                "source": "skipped",
+            }
         if self.demo:
             blob = json.loads((config.FIXTURES_DIR / "labels.json").read_text())
             return blob.get(address) or {
