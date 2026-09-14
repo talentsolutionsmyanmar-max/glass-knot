@@ -1,0 +1,7 @@
+Glass Knot — Solana Smart Money knot inspector for @nansen_ai Meridian Buildathon.
+
+SM dex-trades → BFS related-wallets → grade FARM_CLUSTER | SOLO_SM | RESEARCH | FAIL.
+PAPER · inspect only · no copy-trade.
+
+1,120+ live Nansen API calls.
+GitHub: https://github.com/talentsolutionsmyanmar-max/glass-knot
